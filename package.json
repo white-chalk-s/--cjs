@@ -1,0 +1,48 @@
+{
+  "name": "diary-record-platform",
+  "version": "0.1.0",
+  "description": "日记记录平台 - 本地优先的 Web + Electron 应用",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "node backend/src/index.js",
+    "dev": "node backend/src/index.js",
+    "electron": "electron .",
+    "electron:dev": "electron .",
+    "build": "electron-builder --win --dir",
+    "dist": "electron-builder --win"
+  },
+  "keywords": [
+    "diary",
+    "journal",
+    "electron",
+    "sqlite"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^9.6.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "electron": "^28.3.3",
+    "electron-builder": "^26.8.1"
+  },
+  "build": {
+    "appId": "com.diaryrecord.platform",
+    "productName": "日记记录平台",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "backend/**/*",
+      "public/**/*",
+      "migrations/**/*",
+      "electron/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis"
+    }
+  }
+}
+
