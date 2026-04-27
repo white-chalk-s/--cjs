@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node backend/src/index.js",
     "dev": "node backend/src/index.js",
+    "summary:worker": "node scripts/local-summary-worker.js",
     "electron": "electron .",
     "electron:dev": "electron .",
     "build": "electron-builder --win --dir",

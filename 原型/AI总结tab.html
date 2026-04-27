@@ -1,0 +1,843 @@
+<think>**Planning HTML layout**
+
+I need to focus on creating a full HTML output. It looks like I should redesign the AI summary tab to fit the viewport, avoiding any scrollbars. Since the user prefers no explanations, I’ll make sure to keep it straightforward. Starting with the doctype and ending with HTML is key! Also, I’ve got to keep the title within 15 characters and use action suggestions that all begin with verbs. I should consider a compact layout and ensure the CSS has a height of 100vh with overflow hidden.</think>
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI总结</title>
+<style>
+  :root {
+    --bg: #f6f8fb;
+    --card: #ffffff;
+    --text: #111827;
+    --sub: #64748b;
+    --muted: #94a3b8;
+    --line: #e5e7eb;
+    --blue: #2563eb;
+    --blue-soft: #eff6ff;
+    --green: #16a34a;
+    --green-soft: #ecfdf5;
+    --orange: #f59e0b;
+    --orange-soft: #fffbeb;
+    --red: #ef4444;
+    --red-soft: #fef2f2;
+    --purple: #7c3aed;
+    --purple-soft: #f5f3ff;
+    --gray: #f8fafc;
+    --radius: 16px;
+    --shadow: 0 14px 34px rgba(15, 23, 42, 0.06);
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    color: var(--text);
+    background: var(--bg);
+  }
+
+  .app {
+    width: 100%;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 60px 1fr;
+    overflow: hidden;
+  }
+
+  .topbar {
+    height: 60px;
+    padding: 0 28px;
+    background: var(--card);
+    border-bottom: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 220px 1fr 220px;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .brand-mark {
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+  }
+
+  .brand-name {
+    font-size: 16px;
+    font-weight: 850;
+    letter-spacing: -0.02em;
+  }
+
+  .tabs {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab {
+    padding: 8px 15px;
+    border-radius: 999px;
+    color: var(--sub);
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .tab.active {
+    color: #ffffff;
+    background: var(--text);
+  }
+
+  .top-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+
+  .btn {
+    border: none;
+    border-radius: 10px;
+    padding: 8px 13px;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .btn-primary {
+    color: #ffffff;
+    background: var(--blue);
+  }
+
+  .btn-secondary {
+    color: var(--text);
+    background: var(--gray);
+    border: 1px solid var(--line);
+  }
+
+  .page {
+    height: calc(100vh - 60px);
+    padding: 18px 24px 22px;
+    display: grid;
+    grid-template-rows: 124px 1fr;
+    gap: 16px;
+    overflow: hidden;
+  }
+
+  .hero {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px 20px;
+    display: grid;
+    grid-template-columns: 1.1fr 1.5fr 1.6fr;
+    gap: 16px;
+    align-items: stretch;
+    overflow: hidden;
+  }
+
+  .title-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  h1 {
+    font-size: 24px;
+    line-height: 1.15;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    margin-bottom: 6px;
+  }
+
+  .subtitle {
+    color: var(--sub);
+    font-size: 14px;
+  }
+
+  .conclusion {
+    border-left: 4px solid var(--blue);
+    border-radius: 0 12px 12px 0;
+    background: var(--blue-soft);
+    padding: 13px 15px;
+    display: flex;
+    align-items: center;
+  }
+
+  .conclusion p {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--text);
+  }
+
+  .actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    align-content: center;
+  }
+
+  .action {
+    padding: 9px 11px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: var(--gray);
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.35;
+    font-weight: 700;
+  }
+
+  .action strong {
+    color: var(--blue);
+    margin-right: 3px;
+  }
+
+  .workspace {
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr) 300px;
+    gap: 16px;
+    overflow: hidden;
+  }
+
+  .panel {
+    min-height: 0;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .panel-head {
+    flex: 0 0 auto;
+    padding: 15px 16px 12px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .panel-title {
+    font-size: 15px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+
+  .panel-sub {
+    margin-top: 3px;
+    color: var(--sub);
+    font-size: 12px;
+  }
+
+  .left-body {
+    padding: 14px;
+    display: grid;
+    grid-template-rows: auto auto auto;
+    gap: 12px;
+  }
+
+  .dim-list {
+    display: grid;
+    gap: 8px;
+  }
+
+  .dim {
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    background: var(--gray);
+  }
+
+  .dim.active {
+    background: var(--blue-soft);
+    border-color: #bfdbfe;
+  }
+
+  .dim h3 {
+    font-size: 14px;
+    font-weight: 900;
+    margin-bottom: 3px;
+  }
+
+  .dim.active h3 {
+    color: var(--blue);
+  }
+
+  .dim p {
+    color: var(--sub);
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  .field {
+    display: grid;
+    gap: 7px;
+  }
+
+  .field label {
+    color: var(--sub);
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  .select,
+  .input {
+    width: 100%;
+    height: 38px;
+    padding: 0 11px;
+    border: 1px solid #dbe3ef;
+    border-radius: 10px;
+    background: #ffffff;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+  }
+
+  .generate-box {
+    padding: 12px;
+    border-radius: 12px;
+    background: var(--purple-soft);
+    border: 1px solid #ddd6fe;
+  }
+
+  .generate-box h3 {
+    color: var(--purple);
+    font-size: 13px;
+    font-weight: 900;
+    margin-bottom: 5px;
+  }
+
+  .generate-box p {
+    color: var(--sub);
+    font-size: 12px;
+    line-height: 1.45;
+    margin-bottom: 10px;
+  }
+
+  .summary-body {
+    min-height: 0;
+    padding: 16px;
+    display: grid;
+    grid-template-rows: 64px 1fr;
+    gap: 12px;
+    overflow: hidden;
+  }
+
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+
+  .meta {
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--gray);
+  }
+
+  .meta span {
+    display: block;
+    color: var(--sub);
+    font-size: 11px;
+    margin-bottom: 3px;
+  }
+
+  .meta strong {
+    font-size: 13px;
+    color: var(--text);
+  }
+
+  .summary-grid {
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 76px 1fr 1fr;
+    gap: 12px;
+    overflow: hidden;
+  }
+
+  .card {
+    min-height: 0;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: #ffffff;
+    padding: 13px 14px;
+    overflow: hidden;
+  }
+
+  .card.full {
+    grid-column: 1 / -1;
+  }
+
+  .card h2 {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 14px;
+    font-weight: 900;
+    margin-bottom: 8px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--blue);
+  }
+
+  .dot.green {
+    background: var(--green);
+  }
+
+  .dot.orange {
+    background: var(--orange);
+  }
+
+  .dot.red {
+    background: var(--red);
+  }
+
+  .dot.purple {
+    background: var(--purple);
+  }
+
+  .card p {
+    color: var(--sub);
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .keywords {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  .keyword {
+    padding: 5px 9px;
+    border-radius: 999px;
+    background: var(--blue-soft);
+    border: 1px solid #bfdbfe;
+    color: var(--blue);
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  .evidence-list {
+    display: grid;
+    gap: 7px;
+  }
+
+  .evidence {
+    padding: 9px 10px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--gray);
+  }
+
+  .evidence strong {
+    display: block;
+    color: var(--text);
+    font-size: 12px;
+    margin-bottom: 2px;
+  }
+
+  .evidence span {
+    color: var(--sub);
+    font-size: 12px;
+    line-height: 1.35;
+  }
+
+  .next-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 7px;
+  }
+
+  .next {
+    padding: 8px 10px;
+    border-radius: 10px;
+    background: var(--green-soft);
+    border: 1px solid #bbf7d0;
+    color: var(--text);
+    font-size: 12px;
+    line-height: 1.4;
+    font-weight: 750;
+  }
+
+  .right-body {
+    min-height: 0;
+    padding: 14px;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 12px;
+    overflow: hidden;
+  }
+
+  .extract-card {
+    min-height: 0;
+    padding: 13px;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    background: var(--gray);
+    overflow: hidden;
+  }
+
+  .extract-card h2 {
+    font-size: 14px;
+    font-weight: 900;
+    margin-bottom: 5px;
+  }
+
+  .extract-card p {
+    color: var(--sub);
+    font-size: 12px;
+    line-height: 1.4;
+    margin-bottom: 9px;
+  }
+
+  .extract-list {
+    display: grid;
+    gap: 7px;
+  }
+
+  .extract {
+    padding: 8px 9px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: #ffffff;
+  }
+
+  .extract strong {
+    display: block;
+    font-size: 12px;
+    margin-bottom: 2px;
+  }
+
+  .extract span {
+    display: block;
+    color: var(--sub);
+    font-size: 11px;
+    line-height: 1.35;
+  }
+
+  .extract.happy {
+    background: var(--green-soft);
+    border-color: #bbf7d0;
+  }
+
+  .extract.achieve {
+    background: var(--blue-soft);
+    border-color: #bfdbfe;
+  }
+
+  .extract.consume {
+    background: var(--red-soft);
+    border-color: #fecaca;
+  }
+
+  .extract.energy {
+    background: var(--orange-soft);
+    border-color: #fde68a;
+  }
+
+  .record-list {
+    display: grid;
+    gap: 7px;
+  }
+
+  .record {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px 9px;
+    border-radius: 10px;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    font-size: 12px;
+  }
+
+  .record span {
+    color: var(--sub);
+  }
+
+  .record strong {
+    color: var(--text);
+  }
+
+  @media (max-width: 1180px) {
+    .topbar {
+      grid-template-columns: 190px 1fr 190px;
+      padding: 0 18px;
+    }
+
+    .workspace {
+      grid-template-columns: 230px minmax(0, 1fr) 260px;
+      gap: 12px;
+    }
+
+    .page {
+      padding: 14px;
+      gap: 12px;
+    }
+
+    .hero {
+      grid-template-columns: 0.8fr 1.2fr 1.3fr;
+      gap: 10px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">AI</div>
+      <div class="brand-name">日记记录平台</div>
+    </div>
+
+    <nav class="tabs">
+      <div class="tab">首页</div>
+      <div class="tab">时间轴</div>
+      <div class="tab">写记录</div>
+      <div class="tab active">AI总结</div>
+      <div class="tab">设置</div>
+    </nav>
+
+    <div class="top-actions">
+      <button class="btn btn-secondary">设置模板</button>
+      <button class="btn btn-primary">重新生成</button>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="hero">
+      <div class="title-box">
+        <h1>AI总结</h1>
+        <p class="subtitle">日周月提炼查看</p>
+      </div>
+
+      <div class="conclusion">
+        <p>今天的恢复点来自15:30散步，消耗来自下午频繁切任务。明天先完成一个小任务再开新事项。</p>
+      </div>
+
+      <div class="actions">
+        <div class="action"><strong>切换</strong>日周月维度查看。</div>
+        <div class="action"><strong>选择</strong>日期后重新生成。</div>
+        <div class="action"><strong>复制</strong>明天可执行动作。</div>
+        <div class="action"><strong>保存</strong>结构化总结结果。</div>
+      </div>
+    </section>
+
+    <section class="workspace">
+      <aside class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">总结维度</div>
+            <div class="panel-sub">选择周期后生成</div>
+          </div>
+        </div>
+
+        <div class="left-body">
+          <div class="dim-list">
+            <div class="dim active">
+              <h3>日总结</h3>
+              <p>读取当天全部事件节点。</p>
+            </div>
+            <div class="dim">
+              <h3>周总结</h3>
+              <p>聚合本周全部日总结。</p>
+            </div>
+            <div class="dim">
+              <h3>月总结</h3>
+              <p>汇总本月主题与趋势。</p>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>选择日期</label>
+            <select class="select">
+              <option>2026-04-27</option>
+              <option>2026-04-26</option>
+              <option>2026-04-25</option>
+            </select>
+          </div>
+
+          <div class="generate-box">
+            <h3>生成来源</h3>
+            <p>读取3个事件节点，图片路径仅保存。</p>
+            <button class="btn btn-primary" style="width:100%;">生成总结</button>
+          </div>
+        </div>
+      </aside>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">2026-04-27 日总结</div>
+            <div class="panel-sub">12:00生成 · 已保存本地</div>
+          </div>
+          <button class="btn btn-secondary">复制全文</button>
+        </div>
+
+        <div class="summary-body">
+          <div class="meta-grid">
+            <div class="meta">
+              <span>事件节点</span>
+              <strong>3条</strong>
+            </div>
+            <div class="meta">
+              <span>主要心情</span>
+              <strong>平静</strong>
+            </div>
+            <div class="meta">
+              <span>高频标签</span>
+              <strong>放松</strong>
+            </div>
+            <div class="meta">
+              <span>保存方式</span>
+              <strong>覆盖保存</strong>
+            </div>
+          </div>
+
+          <div class="summary-grid">
+            <article class="card full">
+              <h2><span class="dot"></span>今日关键词</h2>
+              <div class="keywords">
+                <span class="keyword">慢启动</span>
+                <span class="keyword">散步恢复</span>
+                <span class="keyword">任务切换</span>
+                <span class="keyword">睡前整理</span>
+              </div>
+            </article>
+
+            <article class="card">
+              <h2><span class="dot green"></span>正向证据</h2>
+              <div class="evidence-list">
+                <div class="evidence">
+                  <strong>08:30 早餐</strong>
+                  <span>先吃早餐再开电脑，早晨没有急躁。</span>
+                </div>
+                <div class="evidence">
+                  <strong>21:30 整理</strong>
+                  <span>完成照片整理，晚上有明确收尾。</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="card">
+              <h2><span class="dot purple"></span>重复做法</h2>
+              <p>保留早餐后的慢启动流程。下午疲惫时出门走一圈，比继续硬撑更快恢复注意力。</p>
+            </article>
+
+            <article class="card">
+              <h2><span class="dot red"></span>消耗来源</h2>
+              <p>下午连续切换文档和整理任务，导致疲惫提前出现。任务入口过多会稀释完成感。</p>
+            </article>
+
+            <article class="card">
+              <h2><span class="dot orange"></span>明日动作</h2>
+              <div class="next-list">
+                <div class="next">保留早餐后10分钟慢启动。</div>
+                <div class="next">选择一个小任务先完成。</div>
+                <div class="next">安排15:30散步20分钟。</div>
+                <div class="next">关闭暂时不用的任务入口。</div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <aside class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">提取与记录</div>
+            <div class="panel-sub">模板化拆分结果</div>
+          </div>
+        </div>
+
+        <div class="right-body">
+          <section class="extract-card">
+            <h2>分类提取</h2>
+            <p>按开心、成就、消耗和能量来源拆分。</p>
+            <div class="extract-list">
+              <div class="extract happy">
+                <strong>开心提取</strong>
+                <span>晚间整理完成后，感到今天没有白过。</span>
+              </div>
+              <div class="extract achieve">
+                <strong>成就提取</strong>
+                <span>完成照片整理，并记录复盘结论。</span>
+              </div>
+              <div class="extract consume">
+                <strong>消耗提取</strong>
+                <span>下午任务切换过多，注意力下降。</span>
+              </div>
+              <div class="extract energy">
+                <strong>能量来源</strong>
+                <span>散步和慢启动帮助状态恢复。</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="extract-card">
+            <h2>生成记录</h2>
+            <p>总结已保存到本地数据库。</p>
+            <div class="record-list">
+              <div class="record">
+                <span>总结类型</span>
+                <strong>日总结</strong>
+              </div>
+              <div class="record">
+                <span>目标日期</span>
+                <strong>04-27</strong>
+              </div>
+              <div class="record">
+                <span>模板版本</span>
+                <strong>daily-v1</strong>
+              </div>
+              <div class="record">
+                <span>保存状态</span>
+                <strong>已保存</strong>
+              </div>
+            </div>
+          </section>
+        </div>
+      </aside>
+    </section>
+  </main>
+</div>
+</body>
+</html>

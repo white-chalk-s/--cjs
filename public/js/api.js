@@ -7,8 +7,19 @@ const api = {
     getBootstrap() {
         return fetch(`${API_BASE}/bootstrap`).then((res) => res.json());
     },
+    getSearchResults(params) {
+        const search = new URLSearchParams();
+        search.set('query', params.query || '');
+        if (params.limit) {
+            search.set('limit', String(params.limit));
+        }
+        return fetch(`${API_BASE}/search?${search.toString()}`).then((res) => res.json());
+    },
     getDay(recordDate) {
         return fetch(`${API_BASE}/days/${recordDate}`).then((res) => res.json());
+    },
+    getMonthDays(monthKey) {
+        return fetch(`${API_BASE}/days/month/${monthKey}`).then((res) => res.json());
     },
     saveDay(recordDate, data) {
         return fetch(`${API_BASE}/days/${recordDate}`, {
@@ -27,6 +38,25 @@ const api = {
     deleteImage(imageId) {
         return fetch(`${API_BASE}/images/${imageId}`, {
             method: 'DELETE'
+        }).then((res) => res.json());
+    },
+    getSummary(params) {
+        const search = new URLSearchParams();
+        search.set('summaryType', params.summaryType);
+        search.set('targetDate', params.targetDate);
+        return fetch(`${API_BASE}/summaries?${search.toString()}`).then((res) => res.json());
+    },
+    getSummaryTask(params) {
+        const search = new URLSearchParams();
+        search.set('summaryType', params.summaryType);
+        search.set('targetDate', params.targetDate);
+        return fetch(`${API_BASE}/summaries/task?${search.toString()}`).then((res) => res.json());
+    },
+    ingestSummary(data) {
+        return fetch(`${API_BASE}/summaries/ingest`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
         }).then((res) => res.json());
     },
     getSettings() {

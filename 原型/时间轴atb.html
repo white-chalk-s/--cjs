@@ -1,0 +1,986 @@
+<think>**Planning HTML Output**
+
+I need to generate complete HTML from doctype to the end without comments. The user dislikes scrollbars and prefers a design that minimizes them. They want a theme-based personalized output with a structured page that includes a title, subtitle, core conclusions, and action suggestions. I’ll ensure there's no extra </html> tag from the previous output and design with a fixed 100vh layout to avoid scrollbars, maintaining a compact design for the timeline tab.</think>
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>时间轴</title>
+<style>
+  :root {
+    --bg: #f6f8fb;
+    --card: #ffffff;
+    --text: #111827;
+    --sub: #64748b;
+    --muted: #94a3b8;
+    --line: #e5e7eb;
+    --line-strong: #dbe3ef;
+    --blue: #2563eb;
+    --blue-soft: #eff6ff;
+    --green: #16a34a;
+    --green-soft: #ecfdf5;
+    --orange: #f59e0b;
+    --orange-soft: #fffbeb;
+    --red: #ef4444;
+    --red-soft: #fef2f2;
+    --purple: #7c3aed;
+    --purple-soft: #f5f3ff;
+    --gray: #f8fafc;
+    --shadow: 0 14px 34px rgba(15, 23, 42, 0.06);
+    --radius: 16px;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  .app {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 58px 1fr;
+    overflow: hidden;
+  }
+
+  .topbar {
+    height: 58px;
+    padding: 0 24px;
+    background: var(--card);
+    border-bottom: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 220px 1fr 260px;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .brand-mark {
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #2563eb, #16a34a);
+  }
+
+  .brand-name {
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+
+  .tabs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .tab {
+    padding: 8px 15px;
+    border-radius: 999px;
+    color: var(--sub);
+    font-size: 14px;
+    font-weight: 750;
+  }
+
+  .tab.active {
+    color: #ffffff;
+    background: var(--text);
+  }
+
+  .top-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .search {
+    width: 150px;
+    height: 34px;
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    padding: 0 11px;
+    outline: none;
+    font-size: 13px;
+    color: var(--text);
+    background: var(--gray);
+  }
+
+  .btn {
+    height: 34px;
+    border: none;
+    border-radius: 10px;
+    padding: 0 12px;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .btn-primary {
+    color: #ffffff;
+    background: var(--blue);
+  }
+
+  .btn-secondary {
+    color: var(--text);
+    background: var(--gray);
+    border: 1px solid var(--line);
+  }
+
+  .page {
+    height: calc(100vh - 58px);
+    padding: 16px 20px 20px;
+    display: grid;
+    grid-template-rows: 118px 1fr;
+    gap: 14px;
+    overflow: hidden;
+  }
+
+  .hero {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px 18px;
+    display: grid;
+    grid-template-columns: 1fr 1.7fr 1.5fr;
+    gap: 14px;
+    overflow: hidden;
+  }
+
+  .title-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  h1 {
+    font-size: 24px;
+    line-height: 1.15;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    margin-bottom: 6px;
+  }
+
+  .subtitle {
+    color: var(--sub);
+    font-size: 14px;
+  }
+
+  .conclusion {
+    min-width: 0;
+    border-left: 4px solid var(--blue);
+    border-radius: 0 12px 12px 0;
+    background: var(--blue-soft);
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+  }
+
+  .conclusion p {
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .suggestions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    align-content: center;
+  }
+
+  .suggestion {
+    padding: 9px 10px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--gray);
+    font-size: 13px;
+    line-height: 1.35;
+    font-weight: 700;
+  }
+
+  .suggestion strong {
+    color: var(--blue);
+    margin-right: 3px;
+  }
+
+  .workspace {
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr) 300px;
+    gap: 14px;
+    overflow: hidden;
+  }
+
+  .panel {
+    min-height: 0;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .panel-head {
+    flex: 0 0 auto;
+    height: 58px;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .panel-title {
+    font-size: 15px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+
+  .panel-sub {
+    margin-top: 2px;
+    color: var(--sub);
+    font-size: 12px;
+  }
+
+  .month-switch {
+    display: flex;
+    gap: 6px;
+  }
+
+  .icon-btn {
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    background: var(--gray);
+    color: var(--sub);
+    font-weight: 900;
+    cursor: pointer;
+  }
+
+  .calendar-body {
+    min-height: 0;
+    padding: 14px;
+    display: grid;
+    grid-template-rows: 38px 1fr 118px;
+    gap: 12px;
+    overflow: hidden;
+  }
+
+  .month-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 11px;
+    border-radius: 12px;
+    background: var(--blue-soft);
+    border: 1px solid #bfdbfe;
+  }
+
+  .month-title strong {
+    color: var(--blue);
+    font-size: 14px;
+  }
+
+  .month-title span {
+    color: var(--sub);
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .calendar {
+    display: grid;
+    grid-template-rows: 22px repeat(5, 1fr);
+    gap: 6px;
+    min-height: 0;
+  }
+
+  .week,
+  .days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+  }
+
+  .week span {
+    display: grid;
+    place-items: center;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 800;
+  }
+
+  .day {
+    min-height: 0;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--gray);
+    display: grid;
+    place-items: center;
+    position: relative;
+    color: var(--sub);
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  .day.has {
+    color: var(--text);
+    background: #ffffff;
+  }
+
+  .day.active {
+    color: #ffffff;
+    background: var(--blue);
+    border-color: var(--blue);
+  }
+
+  .day .dots {
+    position: absolute;
+    bottom: 5px;
+    display: flex;
+    gap: 2px;
+  }
+
+  .day .dots i {
+    width: 4px;
+    height: 4px;
+    border-radius: 999px;
+    background: var(--green);
+  }
+
+  .day.active .dots i {
+    background: #ffffff;
+  }
+
+  .date-list {
+    display: grid;
+    gap: 7px;
+  }
+
+  .date-item {
+    display: grid;
+    grid-template-columns: 50px 1fr 34px;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 9px;
+    border-radius: 11px;
+    border: 1px solid var(--line);
+    background: var(--gray);
+  }
+
+  .date-item.active {
+    background: var(--blue-soft);
+    border-color: #bfdbfe;
+  }
+
+  .date-item strong {
+    color: var(--text);
+    font-size: 13px;
+  }
+
+  .date-item span {
+    color: var(--sub);
+    font-size: 12px;
+  }
+
+  .badge {
+    height: 22px;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    color: var(--blue);
+    background: #ffffff;
+    border: 1px solid #bfdbfe;
+    font-size: 12px;
+    font-weight: 900;
+  }
+
+  .timeline-panel {
+    min-width: 0;
+  }
+
+  .timeline-body {
+    min-height: 0;
+    padding: 14px;
+    display: grid;
+    grid-template-rows: 58px 1fr 54px;
+    gap: 12px;
+    overflow: hidden;
+  }
+
+  .day-summary {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+
+  .summary-item {
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: var(--gray);
+  }
+
+  .summary-item span {
+    display: block;
+    color: var(--sub);
+    font-size: 11px;
+    margin-bottom: 3px;
+  }
+
+  .summary-item strong {
+    color: var(--text);
+    font-size: 13px;
+  }
+
+  .timeline {
+    min-height: 0;
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    gap: 10px;
+    overflow: hidden;
+  }
+
+  .event {
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 76px 1fr 118px;
+    gap: 12px;
+    padding: 13px;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    background: #ffffff;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .event::before {
+    content: "";
+    position: absolute;
+    left: 49px;
+    top: 34px;
+    bottom: -18px;
+    width: 2px;
+    background: var(--line);
+  }
+
+  .event:last-child::before {
+    display: none;
+  }
+
+  .time {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .time-dot {
+    width: 10px;
+    height: 10px;
+    margin-top: 4px;
+    border-radius: 999px;
+    background: var(--blue);
+    box-shadow: 0 0 0 4px var(--blue-soft);
+  }
+
+  .time strong {
+    color: var(--blue);
+    font-size: 13px;
+  }
+
+  .event-main {
+    min-width: 0;
+  }
+
+  .event-main h2 {
+    font-size: 15px;
+    font-weight: 900;
+    margin-bottom: 5px;
+  }
+
+  .event-main p {
+    color: var(--sub);
+    font-size: 13px;
+    line-height: 1.45;
+    max-width: 680px;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .tag {
+    padding: 4px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--blue);
+    background: var(--blue-soft);
+    border: 1px solid #bfdbfe;
+  }
+
+  .tag.green {
+    color: var(--green);
+    background: var(--green-soft);
+    border-color: #bbf7d0;
+  }
+
+  .tag.orange {
+    color: #b45309;
+    background: var(--orange-soft);
+    border-color: #fde68a;
+  }
+
+  .media-box {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 7px;
+    align-content: center;
+  }
+
+  .thumb {
+    height: 54px;
+    border-radius: 11px;
+    border: 1px solid var(--line);
+    background: linear-gradient(135deg, #eff6ff, #f8fafc);
+    display: grid;
+    place-items: center;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 800;
+  }
+
+  .thumb.empty {
+    border-style: dashed;
+    background: var(--gray);
+  }
+
+  .timeline-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    background: var(--gray);
+    border: 1px solid var(--line);
+  }
+
+  .timeline-actions p {
+    color: var(--sub);
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 8px;
+  }
+
+  .insight-body {
+    min-height: 0;
+    padding: 14px;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 12px;
+    overflow: hidden;
+  }
+
+  .insight-card {
+    min-height: 0;
+    padding: 13px;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    background: var(--gray);
+    overflow: hidden;
+  }
+
+  .insight-card h2 {
+    font-size: 14px;
+    font-weight: 900;
+    margin-bottom: 7px;
+  }
+
+  .insight-card p {
+    color: var(--sub);
+    font-size: 12px;
+    line-height: 1.45;
+    margin-bottom: 9px;
+  }
+
+  .mini-list {
+    display: grid;
+    gap: 7px;
+  }
+
+  .mini-item {
+    padding: 8px 9px;
+    border-radius: 10px;
+    background: #ffffff;
+    border: 1px solid var(--line);
+  }
+
+  .mini-item strong {
+    display: block;
+    color: var(--text);
+    font-size: 12px;
+    margin-bottom: 2px;
+  }
+
+  .mini-item span {
+    display: block;
+    color: var(--sub);
+    font-size: 11px;
+    line-height: 1.35;
+  }
+
+  .mini-item.green {
+    background: var(--green-soft);
+    border-color: #bbf7d0;
+  }
+
+  .mini-item.blue {
+    background: var(--blue-soft);
+    border-color: #bfdbfe;
+  }
+
+  .mini-item.orange {
+    background: var(--orange-soft);
+    border-color: #fde68a;
+  }
+
+  .filter-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+  }
+
+  .filter {
+    padding: 8px 9px;
+    border-radius: 10px;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--sub);
+    text-align: center;
+  }
+
+  .filter.active {
+    color: var(--blue);
+    background: var(--blue-soft);
+    border-color: #bfdbfe;
+  }
+
+  @media (max-width: 1200px) {
+    .topbar {
+      grid-template-columns: 190px 1fr 220px;
+      padding: 0 16px;
+    }
+
+    .workspace {
+      grid-template-columns: 250px minmax(0, 1fr) 260px;
+      gap: 12px;
+    }
+
+    .page {
+      padding: 14px;
+      gap: 12px;
+    }
+
+    .hero {
+      grid-template-columns: 0.8fr 1.4fr 1.3fr;
+      gap: 10px;
+    }
+
+    .event {
+      grid-template-columns: 70px 1fr 96px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">记</div>
+      <div class="brand-name">日记记录平台</div>
+    </div>
+
+    <nav class="tabs">
+      <div class="tab">首页</div>
+      <div class="tab active">时间轴</div>
+      <div class="tab">写记录</div>
+      <div class="tab">AI总结</div>
+      <div class="tab">设置</div>
+    </nav>
+
+    <div class="top-actions">
+      <input class="search" value="搜索记录">
+      <button class="btn btn-secondary">筛选</button>
+      <button class="btn btn-primary">写记录</button>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="hero">
+      <div class="title-block">
+        <h1>时间轴</h1>
+        <p class="subtitle">按日期回看原始记录</p>
+      </div>
+
+      <div class="conclusion">
+        <p>4月27日有3个事件节点，下午散步后状态回升。原始内容、图片和标签集中在这里查看。</p>
+      </div>
+
+      <div class="suggestions">
+        <div class="suggestion"><strong>点击</strong>日期查看当天节点。</div>
+        <div class="suggestion"><strong>筛选</strong>标签定位相似事件。</div>
+        <div class="suggestion"><strong>编辑</strong>当天补充遗漏细节。</div>
+        <div class="suggestion"><strong>生成</strong>总结提炼当天证据。</div>
+      </div>
+    </section>
+
+    <section class="workspace">
+      <aside class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">日期导航</div>
+            <div class="panel-sub">月历与记录日期</div>
+          </div>
+          <div class="month-switch">
+            <button class="icon-btn">‹</button>
+            <button class="icon-btn">›</button>
+          </div>
+        </div>
+
+        <div class="calendar-body">
+          <div class="month-title">
+            <strong>2026年04月</strong>
+            <span>12天有记录</span>
+          </div>
+
+          <div class="calendar">
+            <div class="week">
+              <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span>
+            </div>
+            <div class="days">
+              <div class="day">1</div><div class="day has">2<div class="dots"><i></i></div></div><div class="day">3</div><div class="day has">4<div class="dots"><i></i><i></i></div></div><div class="day">5</div><div class="day">6</div><div class="day has">7<div class="dots"><i></i></div></div>
+            </div>
+            <div class="days">
+              <div class="day">8</div><div class="day has">9<div class="dots"><i></i></div></div><div class="day">10</div><div class="day">11</div><div class="day has">12<div class="dots"><i></i><i></i></div></div><div class="day">13</div><div class="day">14</div>
+            </div>
+            <div class="days">
+              <div class="day has">15<div class="dots"><i></i></div></div><div class="day">16</div><div class="day">17</div><div class="day has">18<div class="dots"><i></i></div></div><div class="day">19</div><div class="day has">20<div class="dots"><i></i><i></i></div></div><div class="day">21</div>
+            </div>
+            <div class="days">
+              <div class="day">22</div><div class="day has">23<div class="dots"><i></i></div></div><div class="day has">24<div class="dots"><i></i><i></i></div></div><div class="day has">25<div class="dots"><i></i></div></div><div class="day has">26<div class="dots"><i></i><i></i></div></div><div class="day active">27<div class="dots"><i></i><i></i><i></i></div></div><div class="day">28</div>
+            </div>
+            <div class="days">
+              <div class="day">29</div><div class="day">30</div><div class="day"></div><div class="day"></div><div class="day"></div><div class="day"></div><div class="day"></div>
+            </div>
+          </div>
+
+          <div class="date-list">
+            <div class="date-item active">
+              <strong>04-27</strong>
+              <span>3个节点</span>
+              <div class="badge">今</div>
+            </div>
+            <div class="date-item">
+              <strong>04-26</strong>
+              <span>2个节点</span>
+              <div class="badge">2</div>
+            </div>
+            <div class="date-item">
+              <strong>04-25</strong>
+              <span>1个节点</span>
+              <div class="badge">1</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <section class="panel timeline-panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">2026-04-27 原始日记</div>
+            <div class="panel-sub">按时间顺序展示事件节点</div>
+          </div>
+          <button class="btn btn-secondary">查看AI提炼</button>
+        </div>
+
+        <div class="timeline-body">
+          <div class="day-summary">
+            <div class="summary-item">
+              <span>事件节点</span>
+              <strong>3条</strong>
+            </div>
+            <div class="summary-item">
+              <span>图片数量</span>
+              <strong>2张</strong>
+            </div>
+            <div class="summary-item">
+              <span>主要心情</span>
+              <strong>平静</strong>
+            </div>
+            <div class="summary-item">
+              <span>保存状态</span>
+              <strong>已同步</strong>
+            </div>
+          </div>
+
+          <div class="timeline">
+            <article class="event">
+              <div class="time">
+                <span class="time-dot"></span>
+                <strong>08:30</strong>
+              </div>
+              <div class="event-main">
+                <h2>早餐</h2>
+                <p>起床后先吃了早餐，没有马上打开电脑。早晨节奏慢一点，状态比昨天稳。</p>
+                <div class="tags">
+                  <span class="tag green">平稳</span>
+                  <span class="tag">慢启动</span>
+                </div>
+              </div>
+              <div class="media-box">
+                <div class="thumb empty">无图片</div>
+              </div>
+            </article>
+
+            <article class="event">
+              <div class="time">
+                <span class="time-dot"></span>
+                <strong>15:30</strong>
+              </div>
+              <div class="event-main">
+                <h2>散步</h2>
+                <p>下午有点疲惫，出门走了一圈。风很舒服，回来后注意力恢复了一些。</p>
+                <div class="tags">
+                  <span class="tag green">放松</span>
+                  <span class="tag">恢复</span>
+                  <span class="tag orange">能量来源</span>
+                </div>
+              </div>
+              <div class="media-box">
+                <div class="thumb">图1</div>
+                <div class="thumb">图2</div>
+              </div>
+            </article>
+
+            <article class="event">
+              <div class="time">
+                <span class="time-dot"></span>
+                <strong>21:30</strong>
+              </div>
+              <div class="event-main">
+                <h2>睡前复盘</h2>
+                <p>整理照片后感觉今天没有白过。也发现下午切任务太多，明天要先收束入口。</p>
+                <div class="tags">
+                  <span class="tag">成就</span>
+                  <span class="tag orange">复盘</span>
+                  <span class="tag green">完成感</span>
+                </div>
+              </div>
+              <div class="media-box">
+                <div class="thumb empty">待补图</div>
+              </div>
+            </article>
+          </div>
+
+          <div class="timeline-actions">
+            <p>当天记录完整，可继续编辑或生成结构化日总结。</p>
+            <div class="action-buttons">
+              <button class="btn btn-secondary">编辑当天</button>
+              <button class="btn btn-primary">生成日总结</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">快速定位</div>
+            <div class="panel-sub">标签筛选与回看线索</div>
+          </div>
+        </div>
+
+        <div class="insight-body">
+          <section class="insight-card">
+            <h2>标签筛选</h2>
+            <p>用标签快速定位同类事件。</p>
+            <div class="filter-row">
+              <div class="filter active">放松</div>
+              <div class="filter">成就</div>
+              <div class="filter">消耗</div>
+              <div class="filter active">恢复</div>
+              <div class="filter">开心</div>
+              <div class="filter">复盘</div>
+            </div>
+          </section>
+
+          <section class="insight-card">
+            <h2>回看线索</h2>
+            <p>从原始记录中保留可复用证据。</p>
+            <div class="mini-list">
+              <div class="mini-item green">
+                <strong>恢复动作</strong>
+                <span>15:30散步后注意力回升。</span>
+              </div>
+              <div class="mini-item blue">
+                <strong>完成证据</strong>
+                <span>21:30完成照片整理。</span>
+              </div>
+              <div class="mini-item orange">
+                <strong>待减少项</strong>
+                <span>下午任务入口切换过多。</span>
+              </div>
+            </div>
+          </section>
+        </div>
+      </aside>
+    </section>
+  </main>
+</div>
+</body>
+</html>

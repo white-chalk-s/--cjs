@@ -13,8 +13,8 @@ const SETTING_KEYS = [
 ];
 
 const DEFAULT_SETTINGS = {
-    ai_provider: 'OpenAI',
-    ai_model: 'gpt-4.1-mini',
+    ai_provider: 'Local',
+    ai_model: 'local-worker',
     ai_api_key: '',
     daily_summary_template: '请基于当天事件节点输出结构化日总结，重点提取开心、成就、消耗、能量来源。',
     weekly_summary_template: '请基于本周日总结输出周总结，提取重点事件、整体状态、重复问题、积极变化。',

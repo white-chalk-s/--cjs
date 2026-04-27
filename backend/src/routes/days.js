@@ -101,6 +101,81 @@ function getEntriesWithImages(db, dayId) {
     return rows.map((row) => mapEntry(row, imageMap));
 }
 
+function parseMonthKey(monthKey) {
+    const match = String(monthKey || '').match(/^(\d{4})-(\d{2})$/);
+    if (!match) {
+        return null;
+    }
+
+    const year = Number(match[1]);
+    const month = Number(match[2]);
+    if (!Number.isInteger(year) || !Number.isInteger(month) || month < 1 || month > 12) {
+        return null;
+    }
+
+    const next = new Date(year, month, 1);
+    const nextYear = next.getFullYear();
+    const nextMonth = String(next.getMonth() + 1).padStart(2, '0');
+
+    return {
+        start: `${match[1]}-${match[2]}-01`,
+        end: `${nextYear}-${nextMonth}-01`
+    };
+}
+
+router.get('/month/:monthKey', (req, res) => {
+    try {
+        const db = getDb();
+        const range = parseMonthKey(req.params.monthKey);
+
+        if (!range) {
+            return res.status(400).json({
+                success: false,
+                error: 'Invalid month key'
+            });
+        }
+
+        const rows = db.prepare(`
+            SELECT
+                d.id,
+                d.record_date,
+                d.updated_at,
+                COUNT(e.id) AS entry_count
+            FROM diary_days d
+            LEFT JOIN diary_entries e ON e.day_id = d.id
+            WHERE d.record_date >= ? AND d.record_date < ?
+            GROUP BY d.id
+            ORDER BY d.record_date ASC
+        `).all(range.start, range.end);
+
+        const days = rows.map((row) => ({
+            id: row.id,
+            record_date: row.record_date,
+            day: Number(String(row.record_date).slice(8, 10)),
+            entry_count: Number(row.entry_count) || 0,
+            updated_at: row.updated_at
+        }));
+
+        const totalEntries = days.reduce((sum, day) => sum + day.entry_count, 0);
+
+        res.json({
+            success: true,
+            data: {
+                month: req.params.monthKey,
+                range,
+                recordedDayCount: days.length,
+                totalEntries,
+                days
+            }
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
 router.get('/:recordDate', (req, res) => {
     try {
         const db = getDb();

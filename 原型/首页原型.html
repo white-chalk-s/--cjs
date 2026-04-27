@@ -1,0 +1,1302 @@
+<think>**Generating HTML for homepage**
+
+I think it's essential to focus on creating complete HTML code for the homepage. I'm considering iterating the design to make it more comprehensive. I'll start with the doctype declaration to follow proper HTML standards. It might be a good idea to refine what I've produced previously. Ultimately, I want to ensure the homepage is functional and visually engaging without unnecessary explanations. Let's make it better!</think>
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>日记记录平台首页</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: #172033;
+      background:
+        radial-gradient(circle at 12% 0%, rgba(99, 118, 255, 0.10), transparent 28%),
+        radial-gradient(circle at 88% 3%, rgba(92, 198, 169, 0.13), transparent 30%),
+        linear-gradient(135deg, #f7f9ff 0%, #f8fbf7 54%, #fff9f1 100%);
+    }
+
+    .page {
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .app {
+      max-width: 1320px;
+      margin: 0 auto;
+      overflow: hidden;
+      border: 1px solid rgba(220, 226, 238, 0.92);
+      border-radius: 30px;
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: 0 28px 88px rgba(46, 61, 91, 0.13);
+      backdrop-filter: blur(18px);
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 22px 30px 18px;
+      border-bottom: 1px solid #edf1f7;
+      background: rgba(255, 255, 255, 0.84);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .logo {
+      width: 42px;
+      height: 42px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      color: #ffffff;
+      font-size: 20px;
+      font-weight: 850;
+      background: linear-gradient(135deg, #6274ff, #58c6a8);
+      box-shadow: 0 14px 28px rgba(86, 114, 255, 0.22);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.2;
+      letter-spacing: -0.05em;
+    }
+
+    .brand p {
+      margin: 5px 0 0;
+      color: #6c7689;
+      font-size: 13px;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .date-chip {
+      padding: 10px 14px;
+      color: #536075;
+      font-size: 14px;
+      border: 1px solid #e5ebf3;
+      border-radius: 999px;
+      background: #ffffff;
+    }
+
+    .button {
+      border: 0;
+      border-radius: 14px;
+      padding: 11px 16px;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 760;
+      background: #435bff;
+      box-shadow: 0 12px 24px rgba(67, 91, 255, 0.2);
+    }
+
+    .button.secondary {
+      color: #42506a;
+      background: #f3f6fb;
+      box-shadow: none;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      padding: 12px 30px;
+      overflow-x: auto;
+      border-bottom: 1px solid #edf1f7;
+      background: rgba(249, 251, 255, 0.82);
+    }
+
+    .tab {
+      flex: 0 0 auto;
+      padding: 10px 16px;
+      color: #667085;
+      font-size: 14px;
+      font-weight: 760;
+      border-radius: 999px;
+    }
+
+    .tab.active {
+      color: #ffffff;
+      background: #172033;
+      box-shadow: 0 10px 20px rgba(23, 32, 51, 0.14);
+    }
+
+    .content {
+      padding: 28px 30px 30px;
+    }
+
+    .section {
+      margin-top: 18px;
+    }
+
+    .section:first-child {
+      margin-top: 0;
+    }
+
+    .top-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(330px, 0.85fr);
+      gap: 18px;
+    }
+
+    .card {
+      border: 1px solid #e8eef7;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 14px 38px rgba(76, 91, 120, 0.06);
+      overflow: hidden;
+    }
+
+    .card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 20px 22px 0;
+    }
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .icon {
+      width: 34px;
+      height: 34px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: #f0f4ff;
+    }
+
+    h2,
+    h3,
+    h4,
+    p {
+      margin-top: 0;
+    }
+
+    .card-title h3 {
+      margin: 0;
+      font-size: 17px;
+      letter-spacing: -0.03em;
+    }
+
+    .more {
+      flex: 0 0 auto;
+      color: #5364ff;
+      font-size: 13px;
+      font-weight: 820;
+    }
+
+    .card-body {
+      padding: 18px 22px 22px;
+    }
+
+    .happy-card {
+      min-height: 330px;
+      background:
+        radial-gradient(circle at 94% 0%, rgba(255, 201, 110, 0.18), transparent 30%),
+        rgba(255, 255, 255, 0.94);
+    }
+
+    .happy-quote {
+      padding: 24px;
+      border: 1px solid #f2dfb7;
+      border-radius: 22px;
+      color: #26324a;
+      background:
+        linear-gradient(135deg, rgba(255, 239, 204, 0.96), rgba(255, 255, 255, 0.96)),
+        #ffffff;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      padding: 7px 10px;
+      color: #7a5419;
+      font-size: 12px;
+      font-weight: 820;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .happy-quote h2 {
+      margin: 0;
+      max-width: 640px;
+      font-size: 28px;
+      line-height: 1.35;
+      letter-spacing: -0.055em;
+    }
+
+    .happy-quote p {
+      margin: 12px 0 0;
+      color: #6b5b42;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .tag {
+      padding: 7px 10px;
+      color: #5d6475;
+      font-size: 12px;
+      font-weight: 760;
+      border: 1px solid #e8edf6;
+      border-radius: 999px;
+      background: #ffffff;
+    }
+
+    .tag.orange {
+      color: #7a5419;
+      border-color: #f2dfb7;
+      background: #fff9ed;
+    }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .quick-item {
+      padding: 14px;
+      border: 1px solid #edf1f7;
+      border-radius: 18px;
+      background: #ffffff;
+    }
+
+    .quick-item strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .quick-item span {
+      display: block;
+      margin-top: 6px;
+      color: #707b8f;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .today-focus {
+      display: grid;
+      gap: 12px;
+    }
+
+    .focus-card {
+      padding: 18px;
+      border-radius: 20px;
+      background: #172033;
+      color: #ffffff;
+    }
+
+    .focus-card .eyebrow {
+      color: rgba(255, 255, 255, 0.76);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .focus-card h2 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.28;
+      letter-spacing: -0.05em;
+    }
+
+    .focus-card p {
+      margin: 10px 0 0;
+      color: rgba(255, 255, 255, 0.76);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .route-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .route {
+      display: grid;
+      grid-template-columns: 38px 1fr auto;
+      align-items: center;
+      gap: 12px;
+      padding: 14px;
+      border: 1px solid #edf1f7;
+      border-radius: 18px;
+      background: #f7f9fd;
+    }
+
+    .route-icon {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: #eef1ff;
+    }
+
+    .route strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .route span {
+      display: block;
+      margin-top: 4px;
+      color: #707b8f;
+      font-size: 13px;
+    }
+
+    .route-arrow {
+      color: #435bff;
+      font-weight: 900;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 18px;
+    }
+
+    .ai-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .ai-block {
+      padding: 16px;
+      border: 1px solid #edf1f7;
+      border-radius: 18px;
+      background: #f7f9fd;
+    }
+
+    .ai-block h4 {
+      margin: 0 0 8px;
+      color: #303b52;
+      font-size: 14px;
+    }
+
+    .ai-block p {
+      margin: 0;
+      color: #657188;
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .evidence-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .evidence {
+      display: grid;
+      grid-template-columns: 10px 1fr;
+      gap: 12px;
+      padding: 14px;
+      border: 1px solid #edf1f7;
+      border-radius: 18px;
+      background: #f7f9fd;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      margin-top: 6px;
+      border-radius: 999px;
+      background: #5cc6a9;
+    }
+
+    .dot.blue {
+      background: #6274ff;
+    }
+
+    .dot.orange {
+      background: #f2a647;
+    }
+
+    .evidence strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .evidence span {
+      display: block;
+      margin-top: 4px;
+      color: #707b8f;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .growth-layout {
+      display: grid;
+      grid-template-columns: 0.88fr 1.12fr;
+      gap: 14px;
+    }
+
+    .growth-main {
+      padding: 20px;
+      border: 1px solid #dce8ff;
+      border-radius: 22px;
+      background:
+        radial-gradient(circle at right top, rgba(67, 91, 255, 0.12), transparent 36%),
+        #f7f9ff;
+    }
+
+    .growth-main b {
+      display: block;
+      color: #435bff;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .growth-main h4 {
+      margin: 0 0 10px;
+      font-size: 23px;
+      line-height: 1.28;
+      letter-spacing: -0.05em;
+    }
+
+    .growth-main p {
+      margin: 0;
+      color: #5f6b80;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .growth-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .growth-card {
+      padding: 14px;
+      border: 1px solid #edf1f7;
+      border-radius: 18px;
+      background: #ffffff;
+    }
+
+    .growth-card strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .growth-card span {
+      display: block;
+      margin-top: 7px;
+      color: #707b8f;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .source-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .ranking {
+      padding: 16px;
+      border-radius: 20px;
+      background: #f7f9fd;
+      border: 1px solid #edf1f7;
+    }
+
+    .ranking h4 {
+      margin: 0 0 12px;
+      font-size: 14px;
+    }
+
+    .rank-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .rank {
+      display: grid;
+      grid-template-columns: 26px 1fr auto;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .rank-no {
+      width: 26px;
+      height: 26px;
+      display: grid;
+      place-items: center;
+      color: #435bff;
+      font-size: 12px;
+      font-weight: 850;
+      border-radius: 10px;
+      background: #eef1ff;
+    }
+
+    .rank span {
+      color: #303b52;
+      font-size: 13px;
+      font-weight: 760;
+    }
+
+    .rank em {
+      color: #7b8597;
+      font-size: 12px;
+      font-style: normal;
+    }
+
+    .bottom-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 0.96fr) minmax(0, 1.04fr);
+      gap: 18px;
+    }
+
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+    }
+
+    .day {
+      min-height: 92px;
+      padding: 10px;
+      border: 1px solid #edf1f7;
+      border-radius: 18px;
+      background: #f7f9fd;
+    }
+
+    .day-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .day span {
+      color: #778196;
+      font-size: 12px;
+      font-weight: 720;
+    }
+
+    .day strong {
+      display: block;
+      margin-top: 12px;
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .day p {
+      margin: 9px 0 0;
+      color: #657188;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .day.good {
+      background: #effaf5;
+      border-color: #cbeede;
+    }
+
+    .day.calm {
+      background: #f3f7ff;
+      border-color: #dfe7ff;
+    }
+
+    .day.low {
+      background: #fff6ed;
+      border-color: #f4dfc7;
+    }
+
+    .day.active {
+      color: #ffffff;
+      background: #435bff;
+      border-color: #435bff;
+      box-shadow: 0 14px 28px rgba(67, 91, 255, 0.22);
+    }
+
+    .day.active span,
+    .day.active p {
+      color: rgba(255, 255, 255, 0.82);
+    }
+
+    .trend-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .trend {
+      padding: 14px;
+      border: 1px solid #edf1f7;
+      border-radius: 18px;
+      background: #ffffff;
+    }
+
+    .trend strong {
+      display: block;
+      font-size: 13px;
+    }
+
+    .trend span {
+      display: block;
+      margin-top: 6px;
+      color: #707b8f;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .advice-layout {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .primary-advice {
+      padding: 20px;
+      border-radius: 22px;
+      color: #ffffff;
+      background:
+        radial-gradient(circle at top right, rgba(255, 255, 255, 0.18), transparent 34%),
+        linear-gradient(135deg, #172033, #303b70);
+    }
+
+    .primary-advice b {
+      display: block;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    .primary-advice h4 {
+      margin: 0 0 10px;
+      font-size: 24px;
+      line-height: 1.25;
+      letter-spacing: -0.05em;
+    }
+
+    .primary-advice p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .advice-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .advice {
+      display: grid;
+      grid-template-columns: 34px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 14px;
+      border: 1px solid #edf1f7;
+      border-radius: 18px;
+      background: #f7f9fd;
+    }
+
+    .step {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      color: #435bff;
+      font-size: 13px;
+      font-weight: 850;
+      border-radius: 12px;
+      background: #eef1ff;
+    }
+
+    .advice strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .advice span {
+      display: block;
+      margin-top: 4px;
+      color: #707b8f;
+      font-size: 13px;
+    }
+
+    .type {
+      padding: 7px 10px;
+      color: #435bff;
+      font-size: 12px;
+      font-weight: 820;
+      border-radius: 999px;
+      background: #eef1ff;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 1160px) {
+      .top-layout,
+      .two-col,
+      .growth-layout,
+      .source-layout,
+      .bottom-layout,
+      .advice-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .calendar {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    @media (max-width: 760px) {
+      .page {
+        padding: 12px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 18px;
+      }
+
+      .top-actions {
+        justify-content: flex-start;
+      }
+
+      .tabs {
+        padding: 10px 18px;
+      }
+
+      .content {
+        padding: 18px;
+      }
+
+      .happy-quote h2 {
+        font-size: 24px;
+      }
+
+      .quick-grid,
+      .ai-list,
+      .growth-cards,
+      .calendar,
+      .trend-row {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .route {
+        grid-template-columns: 38px 1fr;
+      }
+
+      .route-arrow {
+        grid-column: 2;
+      }
+
+      .advice {
+        grid-template-columns: 34px 1fr;
+      }
+
+      .type {
+        grid-column: 2;
+        justify-self: start;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .quick-grid,
+      .ai-list,
+      .growth-cards,
+      .calendar,
+      .trend-row {
+        grid-template-columns: 1fr;
+      }
+
+      .brand h1 {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="app">
+      <header class="topbar">
+        <div class="brand">
+          <div class="logo">记</div>
+          <div>
+            <h1>日记记录平台</h1>
+            <p>本地记录 · AI 总结 · 时间轴回看</p>
+          </div>
+        </div>
+        <div class="top-actions">
+          <div class="date-chip">2026-04-27 周一</div>
+          <button class="button secondary">搜索</button>
+          <button class="button">写今日记录</button>
+        </div>
+      </header>
+
+      <nav class="tabs">
+        <div class="tab active">首页</div>
+        <div class="tab">时间轴</div>
+        <div class="tab">写记录</div>
+        <div class="tab">AI总结</div>
+        <div class="tab">设置</div>
+      </nav>
+
+      <div class="content">
+        <section class="section top-layout">
+          <article class="card happy-card">
+            <div class="card-head">
+              <div class="card-title">
+                <div class="icon">😊</div>
+                <h3>开心回看</h3>
+              </div>
+              <div class="more">换一条</div>
+            </div>
+            <div class="card-body">
+              <div class="happy-quote">
+                <div class="eyebrow">最近值得回看的瞬间</div>
+                <h2>晚饭后散步时，风很舒服，朋友顺手帮我带了咖啡。</h2>
+                <p>这条来自 04-25 的记录。它同时包含放松、被照顾和恢复感。</p>
+                <div class="tag-row">
+                  <span class="tag orange">放松</span>
+                  <span class="tag orange">被照顾</span>
+                  <span class="tag orange">开心</span>
+                  <span class="tag">去看原记录</span>
+                </div>
+              </div>
+
+              <div class="quick-grid">
+                <div class="quick-item">
+                  <strong>适合重复</strong>
+                  <span>晚饭后散步，再做短复盘。</span>
+                </div>
+                <div class="quick-item">
+                  <strong>适合避开</strong>
+                  <span>下午连续切换多个任务。</span>
+                </div>
+                <div class="quick-item">
+                  <strong>适合补充</strong>
+                  <span>记录被照顾的具体瞬间。</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <aside class="card">
+            <div class="card-head">
+              <div class="card-title">
+                <div class="icon">🧭</div>
+                <h3>今日入口</h3>
+              </div>
+            </div>
+            <div class="card-body today-focus">
+              <div class="focus-card">
+                <div class="eyebrow">今天先做一件事</div>
+                <h2>记录一个具体事件，不写完整长文。</h2>
+                <p>先保存时间、心情、标题和两句话正文。图片可以之后补充。</p>
+              </div>
+
+              <div class="route-list">
+                <div class="route">
+                  <div class="route-icon">✍️</div>
+                  <div>
+                    <strong>写今日记录</strong>
+                    <span>新增事件节点和图片</span>
+                  </div>
+                  <div class="route-arrow">→</div>
+                </div>
+                <div class="route">
+                  <div class="route-icon">🕘</div>
+                  <div>
+                    <strong>查看时间轴</strong>
+                    <span>回看原始事件细节</span>
+                  </div>
+                  <div class="route-arrow">→</div>
+                </div>
+                <div class="route">
+                  <div class="route-icon">✨</div>
+                  <div>
+                    <strong>生成 AI 总结</strong>
+                    <span>提取开心、成就、消耗</span>
+                  </div>
+                  <div class="route-arrow">→</div>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </section>
+
+        <section class="section two-col">
+          <article class="card">
+            <div class="card-head">
+              <div class="card-title">
+                <div class="icon">✨</div>
+                <h3>今日 AI 提炼</h3>
+              </div>
+              <div class="more">查看详情</div>
+            </div>
+            <div class="card-body">
+              <div class="ai-list">
+                <div class="ai-block">
+                  <h4>今日正向证据</h4>
+                  <p>疲惫时仍完成照片整理，晚上没有堆积感。</p>
+                </div>
+                <div class="ai-block">
+                  <h4>值得重复的做法</h4>
+                  <p>晚饭后散步再复盘，状态更稳。</p>
+                </div>
+                <div class="ai-block">
+                  <h4>需要减少的消耗源</h4>
+                  <p>下午连续切换任务，让注意力变碎。</p>
+                </div>
+                <div class="ai-block">
+                  <h4>明天可执行动作</h4>
+                  <p>上午先做最难的一件事，下午合并小任务。</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-head">
+              <div class="card-title">
+                <div class="icon">🏆</div>
+                <h3>成就证据</h3>
+              </div>
+              <div class="more">证据库</div>
+            </div>
+            <div class="card-body">
+              <div class="evidence-list">
+                <div class="evidence">
+                  <div class="dot blue"></div>
+                  <div>
+                    <strong>完成事项</strong>
+                    <span>把拖延两天的文档写完，并整理了照片。</span>
+                  </div>
+                </div>
+                <div class="evidence">
+                  <div class="dot"></div>
+                  <div>
+                    <strong>突破时刻</strong>
+                    <span>主动开口表达真实想法，没有继续回避。</span>
+                  </div>
+                </div>
+                <div class="evidence">
+                  <div class="dot orange"></div>
+                  <div>
+                    <strong>自我照顾</strong>
+                    <span>早点休息，并用散步恢复下午状态。</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="section card">
+          <div class="card-head">
+            <div class="card-title">
+              <div class="icon">🌱</div>
+              <h3>成长视角</h3>
+            </div>
+            <div class="more">查看全部行为证据</div>
+          </div>
+          <div class="card-body">
+            <div class="growth-layout">
+              <div class="growth-main">
+                <b>本周正在形成的有效模式</b>
+                <h4>用短散步打断消耗，再回到低压力整理。</h4>
+                <p>这个模式已在两次下午疲惫后出现。它比强行继续工作更容易恢复状态。</p>
+                <div class="tag-row">
+                  <span class="tag">适用：任务切换后</span>
+                  <span class="tag">动作：散步 20 分钟</span>
+                  <span class="tag">结果：晚上能复盘</span>
+                </div>
+              </div>
+
+              <div class="growth-cards">
+                <div class="growth-card">
+                  <strong>主动表达</strong>
+                  <span>把真实想法说了出来。</span>
+                </div>
+                <div class="growth-card">
+                  <strong>坚持完成</strong>
+                  <span>不想做，但还是做完了。</span>
+                </div>
+                <div class="growth-card">
+                  <strong>处理冲突</strong>
+                  <span>没有回避，而是处理了。</span>
+                </div>
+                <div class="growth-card">
+                  <strong>照顾自己</strong>
+                  <span>早点休息，主动去散步。</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section two-col">
+          <article class="card">
+            <div class="card-head">
+              <div class="card-title">
+                <div class="icon">⚡</div>
+                <h3>能量来源</h3>
+              </div>
+              <div class="more">查看统计</div>
+            </div>
+            <div class="card-body">
+              <div class="source-layout">
+                <div class="ranking">
+                  <h4>人物 TOP3</h4>
+                  <div class="rank-list">
+                    <div class="rank">
+                      <div class="rank-no">1</div>
+                      <span>小林</span>
+                      <em>被照顾</em>
+                    </div>
+                    <div class="rank">
+                      <div class="rank-no">2</div>
+                      <span>家人</span>
+                      <em>稳定感</em>
+                    </div>
+                    <div class="rank">
+                      <div class="rank-no">3</div>
+                      <span>同事A</span>
+                      <em>协作</em>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ranking">
+                  <h4>活动 TOP3</h4>
+                  <div class="rank-list">
+                    <div class="rank">
+                      <div class="rank-no">1</div>
+                      <span>散步</span>
+                      <em>恢复</em>
+                    </div>
+                    <div class="rank">
+                      <div class="rank-no">2</div>
+                      <span>咖啡店写字</span>
+                      <em>专注</em>
+                    </div>
+                    <div class="rank">
+                      <div class="rank-no">3</div>
+                      <span>听歌整理房间</span>
+                      <em>放松</em>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-head">
+              <div class="card-title">
+                <div class="icon">🧩</div>
+                <h3>消耗提醒</h3>
+              </div>
+              <div class="more">查看原因</div>
+            </div>
+            <div class="card-body">
+              <div class="evidence-list">
+                <div class="evidence">
+                  <div class="dot orange"></div>
+                  <div>
+                    <strong>下午切换过多</strong>
+                    <span>连续处理文档、消息和整理，让注意力断开。</span>
+                  </div>
+                </div>
+                <div class="evidence">
+                  <div class="dot orange"></div>
+                  <div>
+                    <strong>复盘时间偏晚</strong>
+                    <span>太晚开始复盘时，更容易只记录疲惫。</span>
+                  </div>
+                </div>
+                <div class="evidence">
+                  <div class="dot"></div>
+                  <div>
+                    <strong>可替代做法</strong>
+                    <span>先完成一件难事，再批量处理小任务。</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="section bottom-layout">
+          <article class="card">
+            <div class="card-head">
+              <div class="card-title">
+                <div class="icon">📅</div>
+                <h3>本周心情日历</h3>
+              </div>
+              <div class="more">周总结</div>
+            </div>
+            <div class="card-body">
+              <div class="calendar">
+                <div class="day good">
+                  <div class="day-head">
+                    <span>周一</span>
+                    <span>2条</span>
+                  </div>
+                  <strong>🙂</strong>
+                  <p>整理后轻松</p>
+                </div>
+                <div class="day calm">
+                  <div class="day-head">
+                    <span>周二</span>
+                    <span>1条</span>
+                  </div>
+                  <strong>😐</strong>
+                  <p>状态平稳</p>
+                </div>
+                <div class="day good">
+                  <div class="day-head">
+                    <span>周三</span>
+                    <span>3条</span>
+                  </div>
+                  <strong>😊</strong>
+                  <p>有完成感</p>
+                </div>
+                <div class="day low">
+                  <div class="day-head">
+                    <span>周四</span>
+                    <span>2条</span>
+                  </div>
+                  <strong>😣</strong>
+                  <p>切换较多</p>
+                </div>
+                <div class="day calm">
+                  <div class="day-head">
+                    <span>周五</span>
+                    <span>1条</span>
+                  </div>
+                  <strong>😌</strong>
+                  <p>节奏放慢</p>
+                </div>
+                <div class="day good">
+                  <div class="day-head">
+                    <span>周六</span>
+                    <span>4条</span>
+                  </div>
+                  <strong>😄</strong>
+                  <p>社交补能</p>
+                </div>
+                <div class="day active">
+                  <div class="day-head">
+                    <span>今天</span>
+                    <span>3条</span>
+                  </div>
+                  <strong>🙂</strong>
+                  <p>散步恢复</p>
+                </div>
+              </div>
+
+              <div class="trend-row">
+                <div class="trend">
+                  <strong>本周恢复点</strong>
+                  <span>周六恢复感最强，来源是社交和散步。</span>
+                </div>
+                <div class="trend">
+                  <strong>本周消耗点</strong>
+                  <span>周四消耗明显，来源是连续切换任务。</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-head">
+              <div class="card-title">
+                <div class="icon">🧭</div>
+                <h3>明日行动建议</h3>
+              </div>
+              <div class="more">复制</div>
+            </div>
+            <div class="card-body">
+              <div class="advice-layout">
+                <div class="primary-advice">
+                  <b>明天最优先</b>
+                  <h4>把恢复动作提前到下午。</h4>
+                  <p>任务切换两次后，先用短散步重置状态。不要等到明显疲惫后再休息。</p>
+                </div>
+
+                <div class="advice-list">
+                  <div class="advice">
+                    <div class="step">1</div>
+                    <div>
+                      <strong>安排 20 分钟散步。</strong>
+                      <span>放在下午任务切换后。</span>
+                    </div>
+                    <div class="type">能量</div>
+                  </div>
+                  <div class="advice">
+                    <div class="step">2</div>
+                    <div>
+                      <strong>合并同类小任务。</strong>
+                      <span>减少频繁切换带来的消耗。</span>
+                    </div>
+                    <div class="type">专注</div>
+                  </div>
+                  <div class="advice">
+                    <div class="step">3</div>
+                    <div>
+                      <strong>记录一条被照顾瞬间。</strong>
+                      <span>补充开心回看的素材。</span>
+                    </div>
+                    <div class="type">回看</div>
+                  </div>
+                  <div class="advice">
+                    <div class="step">4</div>
+                    <div>
+                      <strong>保留晚上十分钟复盘。</strong>
+                      <span>只写事件，不写长篇。</span>
+                    </div>
+                    <div class="type">记录</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
